@@ -17,6 +17,15 @@ const Files = () => {
     fetchFiles();
   }, [updatePage]);
 
+  const fileDownloadHandler = (fileName) => {
+    const link = document.createElement("a");
+    link.href = `http://localhost:3000/downloadFile/${fileName}`;
+    link.download = fileName; // This triggers download instead of opening in new tab
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const uploadFileHandler = async (e) => {
     e.preventDefault();
     const file = fileInputRef.current.files[0];
@@ -54,6 +63,12 @@ const Files = () => {
             >
               {file.name}
             </a>
+            <span
+              onClick={() => fileDownloadHandler(file.name)}
+              style={{ cursor: "pointer", marginLeft: "10px", color: "blue" }}
+            >
+              Download
+            </span>
           </li>
         ))}
       </ul>

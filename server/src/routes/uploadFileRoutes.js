@@ -15,6 +15,8 @@ const upload = multer({ storage: storage });
 
 router.get("/getFiles", uploadController.getFiles);
 
+router.get("/downloadFile/:filename", uploadController.downloadFile);
+
 router.post(
   "/uploadFiles",
   upload.single("file"),

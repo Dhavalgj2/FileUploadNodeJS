@@ -2,9 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const File = require("../models/File");
 
+const uploadsDir = path.join(__dirname, "../../uploads");
 exports.getFiles = (req, res) => {
-  const uploadsDir = path.join(__dirname, "../../uploads");
-
   fs.readdir(uploadsDir, (err, files) => {
     if (err) {
       console.error("Error reading upload directory:", err);
@@ -18,6 +17,17 @@ exports.getFiles = (req, res) => {
     }));
 
     res.json(fileList);
+  });
+};
+
+exports.downloadFile = async (req, res) => {
+  const fileName = req.params.filename;
+  const filePath = path.join(uploadsDir, fileName);
+  res.download(filePath, fileName, (err) => {
+    if (err) {
+      console.error("Download error:", err);
+      res.status(500).send("File download failed");
+    }
   });
 };
 
